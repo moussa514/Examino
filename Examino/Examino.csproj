@@ -202,6 +202,18 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Entities\Answer.cs" />
+    <Compile Include="Models\Entities\Course.cs" />
+    <Compile Include="Models\Entities\CourseFile.cs" />
+    <Compile Include="Models\Entities\FileType.cs" />
+    <Compile Include="Models\Entities\Group.cs" />
+    <Compile Include="Models\Entities\School.cs" />
+    <Compile Include="Models\Entities\UserQuiz.cs" />
+    <Compile Include="Models\Entities\Question.cs" />
+    <Compile Include="Models\Entities\QuestionType.cs" />
+    <Compile Include="Models\Entities\Quiz.cs" />
+    <Compile Include="Models\Entities\UserAnswer.cs" />
+    <Compile Include="Models\Entities\UserDetail.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -270,6 +282,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Managers\" />
+    <Folder Include="Models\Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -14,7 +14,7 @@ namespace Examino.Models.Entities
         
         //Proprietes de Navegation
         public List<UserDetail> UsersDetails { get; set; }  //Prolongation de l'entitie User créé par ASP User
-        public List<QuizTemplate> QuizTemplates { get; set; }
+        public List<Quiz> Quizzes { get; set; }
         public List<Group> Groups { get; set; }
     }
 }
