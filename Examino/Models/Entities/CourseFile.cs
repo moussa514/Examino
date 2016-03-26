@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Examino.Models.Entities
 {
@@ -6,11 +7,20 @@ namespace Examino.Models.Entities
     public class CourseFile
     {
         public int Id { get; set; }
+
+        [Required]
+        [Display(Name = "Nom")]
         public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Type Fichier")]
         public FileType FileType { get; set; }
+
+        [Required]
+        [Display(Name = "Lien")]
         public string Link { get; set; }
 
         //Proprieté de Navegation
-        public List<Course> Courses { get; set; }
+        public virtual List<Course> Courses { get; set; }
     }
 }
