@@ -1,44 +1,71 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8"/>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+<div class="ui grid">
+    @*Menu Principale*@
+    <div class="computer tablet only row">
+        <div class="ui inverted fixed menu navbar page grid">
+            @Html.ActionLink("Examino", "Index", "Home", new {area = ""}, new {@class = "brand item"})
+            @Html.ActionLink("Home", "Index", "Home", new {area = ""}, new {@class = "item"})
+            @Html.ActionLink("About", "About", "Home", new {area = ""}, new {@class = "item"})
+            @Html.ActionLink("Contact", "Contact", "Home", new {area = ""}, new {@class = "item"})
+
+            @Html.Partial("_LoginPartial")
+        </div>
+    </div>
+    @*End Menu Principale*@
+    @*Alternative menu pour mobile*@
+    <div class="mobile only narrow row">
+        <div class="ui inverted navbar menu">
+            <a href="" class="brand item">Project Name</a>
+            <div class="right menu open">
+                <a href="" class="menu item">
+                    <i class="reorder icon"></i>
+                </a>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+        </div>
+        <div class="ui vertical navbar menu">
+            <a href="" class="active item">Link</a>
+            <a href="" class="item">Link</a>
+            <a href="" class="item">Link</a>
+            <div class="ui item">
+                <div class="text">Dropdown</div>
+                <div class="menu">
+                    <a class="item">Action</a>
+                    <a class="item">Another action</a>
+                    <a class="item">Something else here</a>
+                    <a class="ui aider"></a>
+                    <a class="item">Seperated link</a>
+                    <a class="item">One more seperated link</a>
+                </div>
+            </div>
+            <div class="menu">
+                <a href="" class="active item">Default</a>
+                <a href="" class="item">Static top</a>
+                <a href="" class="item">Fixed top</a>
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    @*End Menu Mobile*@
+    <div class="ui page grid main">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
+    <hr/>
+    <footer>
+        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    </footer>
+</div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/semantic")
+@RenderSection("scripts", false)
 </body>
 </html>
