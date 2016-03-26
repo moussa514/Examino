@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
+    //Cette Entitie garde la réponse de l'utilisateur pour un question d'un Quizz
+    [Table("UserAnswers")]
     public class UserAnswer
-    {
-        //Cette Entitie garde la réponse de l'utilisateur pour un question d'un Quizz
+    {        
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -18,8 +21,11 @@ namespace Examino.Models.Entities
         public string Development { get; set; }
         public int Point { get; set; } //valeur obtenu pour cette réponse
 
-        //Propriete de Navegation
+        //propriétés de Navegation
+        [ForeignKey("UserQuizId")]
         public virtual UserQuiz UserQuiz { get; set; }
+
+        [ForeignKey("QuestionId")]
         public virtual Question Question { get; set; }
     }
 }

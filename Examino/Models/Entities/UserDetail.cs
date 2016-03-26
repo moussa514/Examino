@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
     //Cette entitie est complement de l'information de l'entitie User créé par ASP
+    [Table("UserDetails")]
     public class UserDetail
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -30,8 +32,11 @@ namespace Examino.Models.Entities
         [Required]
         public int? SchoolId { get; set; } //Clé étangère
 
-        //proprietes de Navegation
+        //propriétés de Navegation
+        [ForeignKey("ApplicationUserId")]
         public virtual ApplicationUser User { get; set; }
+
+        [ForeignKey("SchoolId")]
         public virtual School School { get; set; }
     }
 }

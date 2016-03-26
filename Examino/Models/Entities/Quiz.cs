@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
+    //Quiz template
+    [Table("Quizzes")]
     public class Quiz
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -28,9 +32,10 @@ namespace Examino.Models.Entities
         [Display(Name = "Description Quiz")]
         public string Description { get; set; }
 
-
-        //Proprietes de Navegation
+        //propriétés de Navegation
+        [ForeignKey("ApplicationUserId")]
         public virtual ApplicationUser User { get; set; }
+
         public virtual List<Question> Questions { get; set; }
         public virtual List<UserQuiz> UserQuizzes { get; set; }
     }

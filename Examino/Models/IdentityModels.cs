@@ -42,5 +42,34 @@ namespace Examino.Models
         {
             return new ApplicationDbContext();
         }
+
+        //Pour éviter l'erreur de multiples cascade paths. On change le valeur cascade delete pour:
+        //Userdetail et UseQuiz
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            //UserDetail
+            modelBuilder.Entity<UserDetail>()
+                .HasRequired(c => c.User)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+            //UserQuiz
+            modelBuilder.Entity<UserQuiz>()
+                .HasRequired(c => c.User)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<UserQuiz>()
+                .HasRequired(c => c.Group)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<UserQuiz>()
+                .HasRequired(c => c.Course)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<UserQuiz>()
+                .HasRequired(c => c.Quiz)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+        }
     }
 }

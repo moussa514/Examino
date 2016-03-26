@@ -3,7 +3,7 @@ namespace Examino.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class INI : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -34,11 +34,11 @@ namespace Examino.Migrations
                         Image = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Quizs", t => t.QuizId, cascadeDelete: true)
+                .ForeignKey("dbo.Quizzes", t => t.QuizId, cascadeDelete: true)
                 .Index(t => t.QuizId);
             
             CreateTable(
-                "dbo.Quizs",
+                "dbo.Quizzes",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -124,21 +124,45 @@ namespace Examino.Migrations
                 .Index(t => t.RoleId);
             
             CreateTable(
-                "dbo.UserQuizs",
+                "dbo.UserQuizzes",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Quiz_Id = c.Int(),
+                        QuizId = c.Int(nullable: false),
+                        ApplicationUserId = c.String(nullable: false, maxLength: 128),
+                        CourseId = c.Int(nullable: false),
+                        GroupId = c.Int(nullable: false),
                         Group_Id = c.Int(),
                         Course_Id = c.Int(),
+                        Quiz_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Quizs", t => t.Quiz_Id)
                 .ForeignKey("dbo.Groups", t => t.Group_Id)
                 .ForeignKey("dbo.Courses", t => t.Course_Id)
-                .Index(t => t.Quiz_Id)
+                .ForeignKey("dbo.Courses", t => t.CourseId)
+                .ForeignKey("dbo.Groups", t => t.GroupId)
+                .ForeignKey("dbo.Quizzes", t => t.QuizId)
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUserId)
+                .ForeignKey("dbo.Quizzes", t => t.Quiz_Id)
+                .Index(t => t.QuizId)
+                .Index(t => t.ApplicationUserId)
+                .Index(t => t.CourseId)
+                .Index(t => t.GroupId)
                 .Index(t => t.Group_Id)
-                .Index(t => t.Course_Id);
+                .Index(t => t.Course_Id)
+                .Index(t => t.Quiz_Id);
+            
+            CreateTable(
+                "dbo.Courses",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        ApplicationUserId = c.String(nullable: false, maxLength: 128),
+                        Code = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUserId, cascadeDelete: true)
+                .Index(t => t.ApplicationUserId);
             
             CreateTable(
                 "dbo.CourseFiles",
@@ -152,19 +176,6 @@ namespace Examino.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.Courses",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        ApplicationUserId = c.String(nullable: false),
-                        Code = c.String(nullable: false),
-                        User_Id = c.String(maxLength: 128),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
-                .Index(t => t.User_Id);
-            
-            CreateTable(
                 "dbo.Groups",
                 c => new
                     {
@@ -175,6 +186,23 @@ namespace Examino.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Courses", t => t.Course_Id)
                 .Index(t => t.Course_Id);
+            
+            CreateTable(
+                "dbo.UserAnswers",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserQuizId = c.Int(nullable: false),
+                        QuestionId = c.Int(nullable: false),
+                        IsUserAnswer = c.Boolean(nullable: false),
+                        Development = c.String(),
+                        Point = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Questions", t => t.QuestionId, cascadeDelete: true)
+                .ForeignKey("dbo.UserQuizzes", t => t.UserQuizId, cascadeDelete: true)
+                .Index(t => t.UserQuizId)
+                .Index(t => t.QuestionId);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -195,12 +223,11 @@ namespace Examino.Migrations
                         Address = c.String(),
                         Phone = c.String(),
                         Email = c.String(),
-                        ApplicationUserId = c.String(nullable: false),
-                        User_Id = c.String(maxLength: 128),
+                        ApplicationUserId = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
-                .Index(t => t.User_Id);
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUserId, cascadeDelete: true)
+                .Index(t => t.ApplicationUserId);
             
             CreateTable(
                 "dbo.UserDetails",
@@ -217,80 +244,71 @@ namespace Examino.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Schools", t => t.SchoolId, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUserId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUserId)
                 .Index(t => t.ApplicationUserId)
                 .Index(t => t.SchoolId);
             
             CreateTable(
-                "dbo.UserAnswers",
+                "dbo.CourseFileCourses",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
-                        UserQuizId = c.Int(nullable: false),
-                        QuestionId = c.Int(nullable: false),
-                        IsUserAnswer = c.Boolean(nullable: false),
-                        Development = c.String(),
-                        Point = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Questions", t => t.QuestionId, cascadeDelete: true)
-                .ForeignKey("dbo.UserQuizs", t => t.UserQuizId, cascadeDelete: true)
-                .Index(t => t.UserQuizId)
-                .Index(t => t.QuestionId);
-            
-            CreateTable(
-                "dbo.CourseCourseFiles",
-                c => new
-                    {
-                        Course_Id = c.Int(nullable: false),
                         CourseFile_Id = c.Int(nullable: false),
+                        Course_Id = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => new { t.Course_Id, t.CourseFile_Id })
-                .ForeignKey("dbo.Courses", t => t.Course_Id, cascadeDelete: true)
+                .PrimaryKey(t => new { t.CourseFile_Id, t.Course_Id })
                 .ForeignKey("dbo.CourseFiles", t => t.CourseFile_Id, cascadeDelete: true)
-                .Index(t => t.Course_Id)
-                .Index(t => t.CourseFile_Id);
+                .ForeignKey("dbo.Courses", t => t.Course_Id, cascadeDelete: true)
+                .Index(t => t.CourseFile_Id)
+                .Index(t => t.Course_Id);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.UserAnswers", "UserQuizId", "dbo.UserQuizs");
-            DropForeignKey("dbo.UserAnswers", "QuestionId", "dbo.Questions");
             DropForeignKey("dbo.AspNetUsers", "School_Id", "dbo.Schools");
             DropForeignKey("dbo.UserDetails", "ApplicationUserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.UserDetails", "SchoolId", "dbo.Schools");
-            DropForeignKey("dbo.Schools", "User_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Schools", "ApplicationUserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.UserQuizzes", "Quiz_Id", "dbo.Quizzes");
+            DropForeignKey("dbo.UserAnswers", "UserQuizId", "dbo.UserQuizzes");
+            DropForeignKey("dbo.UserAnswers", "QuestionId", "dbo.Questions");
+            DropForeignKey("dbo.UserQuizzes", "ApplicationUserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.UserQuizzes", "QuizId", "dbo.Quizzes");
+            DropForeignKey("dbo.UserQuizzes", "GroupId", "dbo.Groups");
+            DropForeignKey("dbo.UserQuizzes", "CourseId", "dbo.Courses");
             DropForeignKey("dbo.AspNetUsers", "Course_Id", "dbo.Courses");
-            DropForeignKey("dbo.UserQuizs", "Course_Id", "dbo.Courses");
-            DropForeignKey("dbo.Courses", "User_Id", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Quizs", "Course_Id", "dbo.Courses");
+            DropForeignKey("dbo.UserQuizzes", "Course_Id", "dbo.Courses");
+            DropForeignKey("dbo.Courses", "ApplicationUserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Quizzes", "Course_Id", "dbo.Courses");
             DropForeignKey("dbo.Groups", "Course_Id", "dbo.Courses");
             DropForeignKey("dbo.AspNetUsers", "Group_Id", "dbo.Groups");
-            DropForeignKey("dbo.UserQuizs", "Group_Id", "dbo.Groups");
-            DropForeignKey("dbo.CourseCourseFiles", "CourseFile_Id", "dbo.CourseFiles");
-            DropForeignKey("dbo.CourseCourseFiles", "Course_Id", "dbo.Courses");
-            DropForeignKey("dbo.UserQuizs", "Quiz_Id", "dbo.Quizs");
-            DropForeignKey("dbo.Quizs", "ApplicationUserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.UserQuizzes", "Group_Id", "dbo.Groups");
+            DropForeignKey("dbo.CourseFileCourses", "Course_Id", "dbo.Courses");
+            DropForeignKey("dbo.CourseFileCourses", "CourseFile_Id", "dbo.CourseFiles");
+            DropForeignKey("dbo.Quizzes", "ApplicationUserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Questions", "QuizId", "dbo.Quizs");
+            DropForeignKey("dbo.Questions", "QuizId", "dbo.Quizzes");
             DropForeignKey("dbo.Answers", "QuestionId", "dbo.Questions");
-            DropIndex("dbo.CourseCourseFiles", new[] { "CourseFile_Id" });
-            DropIndex("dbo.CourseCourseFiles", new[] { "Course_Id" });
-            DropIndex("dbo.UserAnswers", new[] { "QuestionId" });
-            DropIndex("dbo.UserAnswers", new[] { "UserQuizId" });
+            DropIndex("dbo.CourseFileCourses", new[] { "Course_Id" });
+            DropIndex("dbo.CourseFileCourses", new[] { "CourseFile_Id" });
             DropIndex("dbo.UserDetails", new[] { "SchoolId" });
             DropIndex("dbo.UserDetails", new[] { "ApplicationUserId" });
-            DropIndex("dbo.Schools", new[] { "User_Id" });
+            DropIndex("dbo.Schools", new[] { "ApplicationUserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.UserAnswers", new[] { "QuestionId" });
+            DropIndex("dbo.UserAnswers", new[] { "UserQuizId" });
             DropIndex("dbo.Groups", new[] { "Course_Id" });
-            DropIndex("dbo.Courses", new[] { "User_Id" });
-            DropIndex("dbo.UserQuizs", new[] { "Course_Id" });
-            DropIndex("dbo.UserQuizs", new[] { "Group_Id" });
-            DropIndex("dbo.UserQuizs", new[] { "Quiz_Id" });
+            DropIndex("dbo.Courses", new[] { "ApplicationUserId" });
+            DropIndex("dbo.UserQuizzes", new[] { "Quiz_Id" });
+            DropIndex("dbo.UserQuizzes", new[] { "Course_Id" });
+            DropIndex("dbo.UserQuizzes", new[] { "Group_Id" });
+            DropIndex("dbo.UserQuizzes", new[] { "GroupId" });
+            DropIndex("dbo.UserQuizzes", new[] { "CourseId" });
+            DropIndex("dbo.UserQuizzes", new[] { "ApplicationUserId" });
+            DropIndex("dbo.UserQuizzes", new[] { "QuizId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
@@ -299,24 +317,24 @@ namespace Examino.Migrations
             DropIndex("dbo.AspNetUsers", new[] { "Course_Id" });
             DropIndex("dbo.AspNetUsers", new[] { "Group_Id" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropIndex("dbo.Quizs", new[] { "Course_Id" });
-            DropIndex("dbo.Quizs", new[] { "ApplicationUserId" });
+            DropIndex("dbo.Quizzes", new[] { "Course_Id" });
+            DropIndex("dbo.Quizzes", new[] { "ApplicationUserId" });
             DropIndex("dbo.Questions", new[] { "QuizId" });
             DropIndex("dbo.Answers", new[] { "QuestionId" });
-            DropTable("dbo.CourseCourseFiles");
-            DropTable("dbo.UserAnswers");
+            DropTable("dbo.CourseFileCourses");
             DropTable("dbo.UserDetails");
             DropTable("dbo.Schools");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.UserAnswers");
             DropTable("dbo.Groups");
-            DropTable("dbo.Courses");
             DropTable("dbo.CourseFiles");
-            DropTable("dbo.UserQuizs");
+            DropTable("dbo.Courses");
+            DropTable("dbo.UserQuizzes");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.Quizs");
+            DropTable("dbo.Quizzes");
             DropTable("dbo.Questions");
             DropTable("dbo.Answers");
         }

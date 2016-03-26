@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
+    //Cette Entitie garde une question pour un Quizz
+    [Table("Questions")]
     public class Question
     {
-        //Cette Entitie garde une question pour un Quizz
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -28,8 +31,10 @@ namespace Examino.Models.Entities
 
         public string Image { get; set; }
 
-        //Proprietes de Navegation
+        //propriétés de Navegation
+        [ForeignKey("QuizId")]
         public virtual Quiz Quiz { get; set; }
+
         public virtual List<Answer> Answers { get; set; }
     }
 }

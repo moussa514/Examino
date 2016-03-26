@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
+    [Table("Schools")]
     public class School
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -30,8 +33,10 @@ namespace Examino.Models.Entities
         [Required]
         public string ApplicationUserId { get; set; } //Clé Étangère
 
-        //Propriete de Navegation
+        //propriétés de Navegation
+        [ForeignKey("ApplicationUserId")]
         public virtual ApplicationUser User { get; set; }
+
         public virtual List<ApplicationUser> Users { get; set; }
         public virtual List<UserDetail> UserDetails { get; set; }
     }

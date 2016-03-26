@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
     //C'est entitie garde la information des fichiers pour les cours
+    [Table("CourseFiles")]
     public class CourseFile
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -20,7 +23,7 @@ namespace Examino.Models.Entities
         [Display(Name = "Lien")]
         public string Link { get; set; }
 
-        //Proprieté de Navegation
+        //propriétés de Navegation
         public virtual List<Course> Courses { get; set; }
     }
 }
