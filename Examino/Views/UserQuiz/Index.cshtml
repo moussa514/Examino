@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Examino.Models.Entities.UserQuiz>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Course.ApplicationUserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Group.NomGroupe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quiz.ApplicationUserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Course.ApplicationUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Group.NomGroupe)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quiz.ApplicationUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Email)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

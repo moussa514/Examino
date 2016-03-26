@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
     //Cette Entitie garde l'information des quizzes que les utilisateur ont pris
+    [Serializable]
     [Table("UserQuizzes")]
     public class UserQuiz
     {

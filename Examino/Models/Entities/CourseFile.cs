@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
     //C'est entitie garde la information des fichiers pour les cours
+    [Serializable]
     [Table("CourseFiles")]
     public class CourseFile
     {

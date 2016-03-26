@@ -1,0 +1,56 @@
+﻿@model Examino.Models.Entities.UserQuiz
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>UserQuiz</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.ApplicationUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Course.ApplicationUserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.NomGroupe)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Group.NomGroupe)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quiz.ApplicationUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quiz.ApplicationUserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.Email)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

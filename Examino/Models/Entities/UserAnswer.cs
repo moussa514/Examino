@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
     //Cette Entitie garde la réponse de l'utilisateur pour un question d'un Quizz
+    [Serializable]
     [Table("UserAnswers")]
     public class UserAnswer
     {        

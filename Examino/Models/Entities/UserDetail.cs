@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
     //Cette entitie est complement de l'information de l'entitie User créé par ASP
+    [Serializable]
     [Table("UserDetails")]
     public class UserDetail
     {

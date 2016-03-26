@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Examino.Models.Entities
 {
     //Cette Entitie garde une question pour un Quizz
+    [Serializable]
     [Table("Questions")]
     public class Question
     {

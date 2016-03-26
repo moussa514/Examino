@@ -6,17 +6,17 @@ using Examino.Models.Entities;
 
 namespace Examino.Models.Managers
 {
-    public class AnswerManager
+    public class CourseManager
     {
         //Ajoute un nouvel item et retourne son Id.  En cas d'erreur, ça retourne -1
-        public static int Add(Answer answer)
+        public static int Add(Course course)
         {
             int ret;
             try
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    db.Answers.Add(answer);
+                    db.Courses.Add(course);
                     ret = db.SaveChanges();
                 }
             }
@@ -27,19 +27,15 @@ namespace Examino.Models.Managers
             return ret;
         }
 
-        //Lecture des tous les items par QuestionId
-        public static List<Answer> GetAllByQuestionId(int id)
+        //Lecture des tous les items
+        public static List<Course> GetAll(int id)
         {
-            List<Answer> list;
+            List<Course> list;
             using (var db = new ApplicationDbContext())
             {
                 try
                 {
-                    list =
-                        db.Answers.Include(a => a.Question)
-                            .Where(item => item.QuestionId == id)
-                            .OrderBy(item => item.Id)
-                            .ToList();
+                    list = db.Courses.Include(c => c.User).OrderBy(item => item.Id).ToList();
                 }
                 catch (Exception)
                 {
@@ -51,30 +47,30 @@ namespace Examino.Models.Managers
 
 
         //Lecture d'un item par son Id
-        public static Answer GetById(int id, ApplicationDbContext db = null)
+        public static Course GetById(int id, ApplicationDbContext db = null)
         {
-            Answer answer;
+            Course course;
             if (db != null)
             {
-                answer = db.Answers.Include(a => a.Question).FirstOrDefault(item => item.Id == id);
+                course = db.Courses.Include(c => c.User).FirstOrDefault(item => item.Id == id);
             }
             else
             {
                 using (db = new ApplicationDbContext())
                 {
-                    answer = db.Answers.Include(a => a.Question).FirstOrDefault(item => item.Id == id);
+                    course = db.Courses.Include(c => c.User).FirstOrDefault(item => item.Id == id);
                 }
             }
-            return answer;
+            return course;
         }
 
 
         //Rafraichir un item
-        public static void Edit(Answer answer)
+        public static void Edit(Course course)
         {
             using (var db = new ApplicationDbContext())
             {
-                db.Entry(answer).State = EntityState.Modified;
+                db.Entry(course).State = EntityState.Modified;
                 //SaveChanges                    
                 db.SaveChanges();
             }
@@ -85,10 +81,10 @@ namespace Examino.Models.Managers
         {
             using (var db = new ApplicationDbContext())
             {
-                var answer = GetById(id, db);
-                if (answer != null)
+                var course = GetById(id, db);
+                if (course != null)
                 {
-                    db.Answers.Remove(answer);
+                    db.Courses.Remove(course);
                 }
                 db.SaveChanges();
             }

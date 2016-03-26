@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Examino.Models.Entities
 {
     //Quiz template
+    [Serializable]
     [Table("Quizzes")]
     public class Quiz
     {

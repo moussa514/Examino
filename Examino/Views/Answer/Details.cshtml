@@ -1,0 +1,50 @@
+﻿@model Examino.Models.Entities.Answer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Answer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Question.QuestionLabel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Question.QuestionLabel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnswerLabel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnswerLabel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsRightAnswer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsRightAnswer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
