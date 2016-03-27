@@ -32,13 +32,13 @@ namespace Examino.Models.Managers
             Question question;
             if (db != null)
             {
-                question = db.Questions.FirstOrDefault(item => item.Id == id);
+                question = db.Questions.Include(q => q.Quiz).FirstOrDefault(item => item.Id == id);
             }
             else
             {
                 using (db = new ApplicationDbContext())
                 {
-                    question = db.Questions.FirstOrDefault(item => item.Id == id);
+                    question = db.Questions.Include(q => q.Quiz).FirstOrDefault(item => item.Id == id);
                 }
             }
             return question;

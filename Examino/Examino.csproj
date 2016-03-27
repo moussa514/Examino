@@ -202,6 +202,7 @@
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\QuizController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Controllers\UserAnswerController.cs" />
@@ -502,6 +503,11 @@
     <Content Include="Views\UserQuiz\Details.cshtml" />
     <Content Include="Views\UserQuiz\Edit.cshtml" />
     <Content Include="Views\UserQuiz\Index.cshtml" />
+    <Content Include="Views\Question\Create.cshtml" />
+    <Content Include="Views\Question\Delete.cshtml" />
+    <Content Include="Views\Question\Details.cshtml" />
+    <Content Include="Views\Question\Edit.cshtml" />
+    <Content Include="Views\Question\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
