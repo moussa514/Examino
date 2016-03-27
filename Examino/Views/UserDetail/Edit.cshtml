@@ -4,89 +4,113 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Modifier</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>UserDetail</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <h4>Utilisateur</h4>
+        <hr/>
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
         @Html.HiddenFor(model => model.Id)
 
+        @Html.HiddenFor(model => model.ApplicationUserId)
+        @Html.HiddenFor(model => model.SchoolId)
+
         <div class="form-group">
-            @Html.LabelFor(model => model.ApplicationUserId, "ApplicationUserId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.User.Email, new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.DropDownList("ApplicationUserId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ApplicationUserId, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.User.Email, new {htmlAttributes = new {@class = "form-control", @ReadOnly = "ReadOnly"}})
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.CodeUser, new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.CodeUser, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.CodeUser, "", new {@class = "text-danger"})
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.FirstName, new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.FirstName, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.FirstName, "", new {@class = "text-danger"})
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.LastName, new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.LastName, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.LastName, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.Photo)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Photo, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                <img src="@Model.Photo" alt="photo" width="64" height="64" id="imageId"/>
+                @Html.ValidationMessageFor(model => model.Photo, "", new {@class = "text-danger"})
+                <label class="btn btn-primary btn-xs" for="fileinput">
+                    <input id="fileinput" type="file" style="display: none;" onchange="upload_photo(this)"/>
+                    Changer
+                </label>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Photo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Photo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Photo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsConfirmed, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.IsConfirmed, new {@class = "control-label col-md-2"})
             <div class="col-md-10">
                 <div class="checkbox">
                     @Html.EditorFor(model => model.IsConfirmed)
-                    @Html.ValidationMessageFor(model => model.IsConfirmed, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.IsConfirmed, "", new {@class = "text-danger"})
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SchoolId, "SchoolId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SchoolId, new {@class = "control-label col-md-2"})
             <div class="col-md-10">
-                @Html.DropDownList("SchoolId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SchoolId, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.School.Name, new {@class = "form-control", @ReadOnly = "readonly"})
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Saugarder" class="btn btn-default"/>
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Retourner au liste", "Index")
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+@section scripts
+{
+    <script>
+        function upload_photo(input) {
+            var image = document.getElementById("imageId");
+            var filename = document.getElementById("Photo");
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    image.src = e.target.result;
+                    image.onload = function() {
+                        filename.value = image.src;
+                        //alert(filename.value);
+                    };
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 }

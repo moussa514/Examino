@@ -494,7 +494,6 @@
     <Content Include="Views\UserAnswer\Details.cshtml" />
     <Content Include="Views\UserAnswer\Edit.cshtml" />
     <Content Include="Views\UserAnswer\Index.cshtml" />
-    <Content Include="Views\UserDetail\Create.cshtml" />
     <Content Include="Views\UserDetail\Delete.cshtml" />
     <Content Include="Views\UserDetail\Details.cshtml" />
     <Content Include="Views\UserDetail\Edit.cshtml" />

@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
+﻿using System.Net;
 using System.Web.Mvc;
-using Examino.Models;
 using Examino.Models.Entities;
+using Examino.Models.Managers;
 
 namespace Examino.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserDetailController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: UserDetail
         public ActionResult Index()
         {
-            var userDetails = db.UserDetails.Include(u => u.School).Include(u => u.User);
-            return View(userDetails.ToList());
+            return View(UserDetailManager.GetAll());
         }
 
         // GET: UserDetail/Details/5
@@ -29,38 +21,11 @@ namespace Examino.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserDetail userDetail = db.UserDetails.Find(id);
+            var userDetail = UserDetailManager.GetById(id ?? 0);
             if (userDetail == null)
             {
                 return HttpNotFound();
             }
-            return View(userDetail);
-        }
-
-        // GET: UserDetail/Create
-        public ActionResult Create()
-        {
-            ViewBag.SchoolId = new SelectList(db.Schools, "Id", "Name");
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email");
-            return View();
-        }
-
-        // POST: UserDetail/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,ApplicationUserId,Code,FirstName,LastName,Photo,IsConfirmed,SchoolId")] UserDetail userDetail)
-        {
-            if (ModelState.IsValid)
-            {
-                db.UserDetails.Add(userDetail);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.SchoolId = new SelectList(db.Schools, "Id", "Name", userDetail.SchoolId);
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", userDetail.ApplicationUserId);
             return View(userDetail);
         }
 
@@ -71,13 +36,11 @@ namespace Examino.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserDetail userDetail = db.UserDetails.Find(id);
+            var userDetail = UserDetailManager.GetById(id ?? 0);
             if (userDetail == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.SchoolId = new SelectList(db.Schools, "Id", "Name", userDetail.SchoolId);
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", userDetail.ApplicationUserId);
             return View(userDetail);
         }
 
@@ -86,16 +49,15 @@ namespace Examino.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,ApplicationUserId,Code,FirstName,LastName,Photo,IsConfirmed,SchoolId")] UserDetail userDetail)
+        public ActionResult Edit(
+            [Bind(Include = "Id,ApplicationUserId,Code,FirstName,LastName,Photo,IsConfirmed,SchoolId")] UserDetail
+                userDetail)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(userDetail).State = EntityState.Modified;
-                db.SaveChanges();
+                UserDetailManager.Edit(userDetail);
                 return RedirectToAction("Index");
             }
-            ViewBag.SchoolId = new SelectList(db.Schools, "Id", "Name", userDetail.SchoolId);
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", userDetail.ApplicationUserId);
             return View(userDetail);
         }
 
@@ -106,7 +68,7 @@ namespace Examino.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserDetail userDetail = db.UserDetails.Find(id);
+            var userDetail = UserDetailManager.GetById(id ?? 0);
             if (userDetail == null)
             {
                 return HttpNotFound();
@@ -118,20 +80,9 @@ namespace Examino.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
-        {
-            UserDetail userDetail = db.UserDetails.Find(id);
-            db.UserDetails.Remove(userDetail);
-            db.SaveChanges();
+        {            
+            UserDetailManager.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

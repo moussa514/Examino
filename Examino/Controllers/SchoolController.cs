@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
+﻿using System.Net;
 using System.Web.Mvc;
-using Examino.Models;
 using Examino.Models.Entities;
+using Examino.Models.Managers;
 using Microsoft.AspNet.Identity;
 
 namespace Examino.Controllers
@@ -15,13 +9,10 @@ namespace Examino.Controllers
     [Authorize(Roles = "Admin,Director")]
     public class SchoolController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: School
         public ActionResult Index()
         {
-            var schools = db.Schools.Include(s => s.User);
-            return View(schools.ToList());
+            return View(SchoolManager.GetAll());
         }
 
         // GET: School/Details/5
@@ -31,7 +22,7 @@ namespace Examino.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = db.Schools.Find(id);
+            var school = SchoolManager.GetById((int) id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -46,20 +37,17 @@ namespace Examino.Controllers
         }
 
         // POST: School/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,Address,Phone,Email,ApplicationUserId")] School school)
         {
             if (ModelState.IsValid)
             {
-                db.Schools.Add(school);
-                db.SaveChanges();
+                SchoolManager.Add(school);
                 return RedirectToAction("Index");
             }
-
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", school.ApplicationUserId);
+            ViewBag.ApplicationUserId = new SelectList(UserDetailManager.GetAll(), "Id", "Email",
+                school.ApplicationUserId);
             return View(school);
         }
 
@@ -70,40 +58,40 @@ namespace Examino.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = db.Schools.Find(id);
+            var school = SchoolManager.GetById((int) id);
             if (school == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", school.ApplicationUserId);
+            ViewBag.ApplicationUserId = new SelectList(UserDetailManager.GetAll(), "Id", "Email",
+                school.ApplicationUserId);
             return View(school);
         }
 
         // POST: School/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Address,Phone,Email,ApplicationUserId")] School school)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(school).State = EntityState.Modified;
-                db.SaveChanges();
+                SchoolManager.Edit(school);
                 return RedirectToAction("Index");
             }
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", school.ApplicationUserId);
+            ViewBag.ApplicationUserId = new SelectList(UserDetailManager.GetAll(), "Id", "Email",
+                school.ApplicationUserId);
             return View(school);
         }
 
         // GET: School/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            School school = db.Schools.Find(id);
+            var school = SchoolManager.GetById((int) id);
             if (school == null)
             {
                 return HttpNotFound();
@@ -112,23 +100,13 @@ namespace Examino.Controllers
         }
 
         // POST: School/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            School school = db.Schools.Find(id);
-            db.Schools.Remove(school);
-            db.SaveChanges();
+            SchoolManager.Delete(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

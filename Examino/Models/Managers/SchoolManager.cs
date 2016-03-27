@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Examino.Models.Entities;
 
 namespace Examino.Models.Managers
-{    
+{
     public class SchoolManager
     {
         //Ajoute un nouvel item et retourne son Id.  En cas d'erreur, ça retourne -1
@@ -27,6 +26,24 @@ namespace Examino.Models.Managers
                 ret = -1;
             }
             return ret;
+        }
+
+        //Lecture de tous les écoles
+        public static List<School> GetAll()
+        {
+            List<School> list;
+            using (var db = new ApplicationDbContext())
+            {
+                try
+                {
+                    list = db.Schools.Include(s => s.User).ToList();
+                }
+                catch (Exception)
+                {
+                    list = null;
+                }
+            }
+            return list;
         }
 
         //Lecture d'un item par son Id

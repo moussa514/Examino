@@ -7,8 +7,8 @@
 <h2>Details</h2>
 
 <div>
-    <h4>UserDetail</h4>
-    <hr />
+    <h4>Utlisateur</h4>
+    <hr/>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.School.Name)
@@ -27,11 +27,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Code)
+            @Html.DisplayNameFor(model => model.CodeUser)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Code)
+            @Html.DisplayFor(model => model.CodeUser)
         </dd>
 
         <dt>
@@ -69,6 +69,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Modifier", "Edit", new {id = Model.Id}) |
+    @Html.ActionLink("Retourner au liste", "Index")
 </p>

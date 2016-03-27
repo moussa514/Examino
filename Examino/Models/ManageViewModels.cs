@@ -28,14 +28,14 @@ namespace Examino.Models
     public class SetPasswordViewModel
     {
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins {2} caractères.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "New password")]
+        [Display(Name = "Nouveau Mot de Passe")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Display(Name = "Confirmation Nouveau Mot de Passe")]
+        [Compare("NewPassword", ErrorMessage = "Le nouveau mot de passe et sa confirmation ne sont pas êgals.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -47,14 +47,14 @@ namespace Examino.Models
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Le {0} doit avoir au moins {2} caractères.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Compare("NewPassword", ErrorMessage = "Le nouveau mot de passe et sa confirmation ne sont pas êgals.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -62,7 +62,7 @@ namespace Examino.Models
     {
         [Required]
         [Phone]
-        [Display(Name = "Phone Number")]
+        [Display(Name = "Téléphone")]
         public string Number { get; set; }
     }
 
@@ -74,7 +74,7 @@ namespace Examino.Models
 
         [Required]
         [Phone]
-        [Display(Name = "Phone Number")]
+        [Display(Name = "Téléphone")]
         public string PhoneNumber { get; set; }
     }
 
