@@ -1,3 +1,5 @@
+using Microsoft.AspNet.Identity.EntityFramework;
+
 namespace Examino.Migrations
 {
     using System;
@@ -14,7 +16,11 @@ namespace Examino.Migrations
 
         protected override void Seed(Examino.Models.ApplicationDbContext context)
         {
-
+            //Ajouter de Roles
+            context.Roles.AddOrUpdate(m => m.Name, new IdentityRole { Name = "Student" });
+            context.Roles.AddOrUpdate(m => m.Name, new IdentityRole { Name = "Teacher" });
+            context.Roles.AddOrUpdate(m => m.Name, new IdentityRole { Name = "Director" });
+            context.Roles.AddOrUpdate(m => m.Name, new IdentityRole { Name = "Admin" });
             //  This method will be called after migrating to the latest version.
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 

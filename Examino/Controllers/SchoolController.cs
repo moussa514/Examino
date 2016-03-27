@@ -8,9 +8,11 @@ using System.Web;
 using System.Web.Mvc;
 using Examino.Models;
 using Examino.Models.Entities;
+using Microsoft.AspNet.Identity;
 
 namespace Examino.Controllers
 {
+    [Authorize(Roles = "Admin,Director")]
     public class SchoolController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -40,8 +42,7 @@ namespace Examino.Controllers
         // GET: School/Create
         public ActionResult Create()
         {
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email");
-            return View();
+            return View(new School {ApplicationUserId = User.Identity.GetUserId()});
         }
 
         // POST: School/Create

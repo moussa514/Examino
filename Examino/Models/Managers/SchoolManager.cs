@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using Examino.Models.Entities;
 
 namespace Examino.Models.Managers
-{
+{    
     public class SchoolManager
     {
         //Ajoute un nouvel item et retourne son Id.  En cas d'erreur, ça retourne -1

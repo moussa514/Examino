@@ -13,7 +13,7 @@ namespace Examino.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201603262156284_init"; }
+            get { return "201603271541138_init"; }
         }
         
         string IMigrationMetadata.Source

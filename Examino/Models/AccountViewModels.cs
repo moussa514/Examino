@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Examino.Models.Entities;
 
 namespace Examino.Models
 {
@@ -66,19 +68,37 @@ namespace Examino.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Courriel")]
         public string Email { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Mot de Passe")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Confirmer le mot de Passe")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        //Information Addtionnelle pour l'utilisateur
+        [Required]
+        [Display(Name = "Code de l'utilisateur")]
+        public string CodeUser { get; set; }
+
+        [Required]
+        [Display(Name = "Prenom")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Nom")]
+        public string LastName { get; set; }
+
+        public string Photo { get; set; }
+
+        [Required]
+        public string Role { get; set; } //Clé étangère
     }
 
     public class ResetPasswordViewModel

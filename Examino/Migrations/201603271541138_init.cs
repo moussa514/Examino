@@ -235,15 +235,15 @@ namespace Examino.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         ApplicationUserId = c.String(nullable: false, maxLength: 128),
-                        Code = c.String(nullable: false),
+                        CodeUser = c.String(nullable: false),
                         FirstName = c.String(nullable: false),
                         LastName = c.String(nullable: false),
                         Photo = c.String(),
                         IsConfirmed = c.Boolean(nullable: false),
-                        SchoolId = c.Int(nullable: false),
+                        SchoolId = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Schools", t => t.SchoolId, cascadeDelete: true)
+                .ForeignKey("dbo.Schools", t => t.SchoolId)
                 .ForeignKey("dbo.AspNetUsers", t => t.ApplicationUserId)
                 .Index(t => t.ApplicationUserId)
                 .Index(t => t.SchoolId);

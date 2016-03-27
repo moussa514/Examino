@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,7 +17,7 @@ namespace Examino.Models.Entities
         public string ApplicationUserId { get; set; } //Clé étangère
 
         [Required]
-        public string Code { get; set; }
+        public string CodeUser { get; set; }
 
         [Required]
         [Display(Name = "Prenom")]
@@ -31,7 +32,6 @@ namespace Examino.Models.Entities
         [Required]
         public bool IsConfirmed { get; set; } //Pour savoir si c'est un utilisateur valide ou non
 
-        [Required]
         public int? SchoolId { get; set; } //Clé étangère
 
         //propriétés de Navegation
@@ -40,5 +40,8 @@ namespace Examino.Models.Entities
 
         [ForeignKey("SchoolId")]
         public virtual School School { get; set; }
+
+        [NotMapped]
+        public virtual List<bool> Roles { get; set; }
     }
 }

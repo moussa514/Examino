@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using Examino.Models.Entities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Examino.Models.Managers
 {
@@ -13,19 +16,40 @@ namespace Examino.Models.Managers
         public static int Add(UserDetail userDetail)
         {
             int ret;
-            try
-            {
+            //try
+            //{
                 using (var db = new ApplicationDbContext())
                 {
                     db.UserDetails.Add(userDetail);
                     ret = db.SaveChanges();
                 }
+            //}
+            //catch (Exception)
+            //{
+            //    ret = -1;
+            //}
+            return ret;
+        }
+
+        public static IdentityResult AddRoleUser(ApplicationUser user, string role)
+        {
+            //Ajoute Role pour l'utilisateur
+            IdentityResult ret;
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var userStore = new UserStore<ApplicationUser>(db);
+                    var userManager = new UserManager<ApplicationUser>(userStore);
+                    ret = userManager.AddToRole(user.Id, role);
+                }
             }
             catch (Exception)
             {
-                ret = -1;
+                ret = IdentityResult.Failed();
             }
             return ret;
+
         }
 
         //Lecture d'un item par son Id
@@ -44,6 +68,24 @@ namespace Examino.Models.Managers
                 }
             }
             return userDetail;
+        }
+
+        //Lecture de tous les roles disponibles
+        public static List<SelectListItem> GetAllRoles(ApplicationDbContext db = null)
+        {
+            List<SelectListItem> roles;
+            if (db != null)
+            {
+                roles = db.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            }
+            else
+            {
+                using (db = new ApplicationDbContext())
+                {
+                    roles = db.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+                }
+            }
+            return roles;
         }
 
         //Rafraichir un item
